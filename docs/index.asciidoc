@@ -1,0 +1,5 @@
+= Akkibeat Docs
+
+Welcome to the Akkibeat documentation.
+
+
