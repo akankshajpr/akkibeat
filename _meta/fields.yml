@@ -4,6 +4,24 @@
   fields:
     - name: counter
       type: long
-      required: true
+      #required: true
       description: >
         PLEASE UPDATE DOCUMENTATION
+    - name: type
+      type: string
+      #required: true
+    - name: Message
+      type: string
+      #required: true
+    - name: MaxResponseTime
+      type: float64
+      #required: true
+    - name: Label
+      type: string
+      #required: true
+    - name: MinResponseTime
+      type: float64
+      #required: true
+    - name: AvgResponseTime
+      type: float64
+      #required: true

@@ -7,6 +7,15 @@ import "time"
 
 type Config struct {
 	Period time.Duration `config:"period"`
+	Url string `config:"url"`
+	Authorization string `config:"authorization"`
+	//Location string `confing:"location"`
+	Method string `config:"method"`
+	JsonDotMode string `config:"jsonDotMode"`
+	OutputFormat string `config:"outputFormat"`
+	DefaultOutputFormat string `config:"DefaultOutputFormat"`
+	Headers map[string]string `config:"headers"`
+	Fields map[string]string `config:"fields"`
 }
 
 var DefaultConfig = Config{
