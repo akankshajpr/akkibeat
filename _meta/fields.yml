@@ -14,14 +14,14 @@
       type: string
       #required: true
     - name: MaxResponseTime
-      type: float64
+      type: []float64
       #required: true
     - name: Label
       type: string
       #required: true
     - name: MinResponseTime
-      type: float64
+      type: []float64
       #required: true
     - name: AvgResponseTime
-      type: float64
+      type: []float64
       #required: true

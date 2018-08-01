@@ -13,24 +13,66 @@ import (
 	"github.com/akankshajpr/akkibeat/config"
 )
 
-var Loc = "159205000000025039"
+//var Loc = "6"
 
-type  Mydata []struct {
-	Message	string	`json:"message"`
-	Data struct {
-		ChartData struct {
-			ResponseTimeReportChart struct {
-				Location struct {
-					Max float64 `json:"max"`
-					Label string `json:"label"`
-					Min float64 `json:"min"`
-					Avg float64 `json:"average"`
-				} `json:Loc`
-			} `json:"ResponseTimeReportChart"`
-		}`json:"chart_data"`
-	}`json:"data"`
+type  Mydata []struct {	
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    struct {
+		TableData struct {
+		} `json:"table_data"`
+		Info struct {
+			FormattedEndTime       string `json:"formatted_end_time"`
+			MonitorType            string `json:"monitor_type"`
+			ResourceID             string `json:"resource_id"`
+			ResourceTypeName       string `json:"resource_type_name"`
+			PeriodName             string `json:"period_name"`
+			GeneratedTime          string `json:"generated_time"`
+			MetricAggregationName  string `json:"metric_aggregation_name"`
+			ReportName             string `json:"report_name"`
+			EndTime                string `json:"end_time"`
+			MetricAggregation      int    `json:"metric_aggregation"`
+			StartTime              string `json:"start_time"`
+			SegmentType            int    `json:"segment_type"`
+			ReportType             int    `json:"report_type"`
+			Period                 int    `json:"period"`
+			ResourceName           string `json:"resource_name"`
+			FormattedStartTime     string `json:"formatted_start_time"`
+			FormattedGeneratedTime string `json:"formatted_generated_time"`
+			ResourceType           int    `json:"resource_type"`
+		} `json:"info"`
+		ChartData []struct {
+			ResponseTimeReportChart   []interface{} `json:"ResponseTimeReportChart,omitempty"`
+			LocationResponseTimeChart []struct {
+				Num1 struct {
+					Max             []float64       `json:"max"`
+					Label           string          `json:"label"`
+					Min             []float64       `json:"min"`
+					Nine5Percentile []float64       `json:"95_percentile"`
+					Average         []float64       `json:"average"`
+					ChartData       [][]interface{} `json:"chart_data"`
+				} `json:"1,omitempty"`
+				Num6 struct {
+					Max             []float64       `json:"max"`
+					Label           string          `json:"label"`
+					Min             []float64       `json:"min"`
+					Nine5Percentile []float64       `json:"95_percentile"`
+					Average         []float64       `json:"average"`
+					ChartData       [][]interface{} `json:"chart_data"`
+				} `json:"6,omitempty"`
+				Num15 struct {
+					Max             []float64       `json:"max"`
+					Label           string          `json:"label"`
+					Min             []float64       `json:"min"`
+					Nine5Percentile []float64       `json:"95_percentile"`
+					Average         []float64       `json:"average"`
+					ChartData       [][]interface{} `json:"chart_data"`
+				} `json:"15,omitempty"`
+			} `json:"LocationResponseTimeChart,omitempty"`
+		} `json:"chart_data"`
+	} `json:"data"`
 }
-
+}
 
 // Akkibeat configuration.
 type Akkibeat struct {
@@ -62,6 +104,7 @@ func (bt *Akkibeat) Run(b *beat.Beat) error {
 	if err != nil {
 		return err
 	}
+        fmt.Println("bt.config.Url", bt.config.Url)
 
 	ticker := time.NewTicker(bt.config.Period)
 	counter := 1
@@ -73,7 +116,7 @@ func (bt *Akkibeat) Run(b *beat.Beat) error {
 		}
 
 		client := &http.Client{}
-		req, err := http.NewRequest("GET", bt.config.Url, nil)
+		req, err := http.NewRequest("GET",bt.config.Url,nil)
 		req.Header.Add("Authorization", bt.config.Authorization)
 
 		resp, err := client.Do(req)
@@ -81,16 +124,21 @@ func (bt *Akkibeat) Run(b *beat.Beat) error {
 				return  err
 		}
 		defer resp.Body.Close()
-
+		fmt.Println(resp.Body)
 		var akkidata Mydata
 		if resp.StatusCode == http.StatusOK {
 				bodyBytes, err2 := ioutil.ReadAll(resp.Body)
-				if err2 != nil {
+				//abc := string(bodyBytes)
+				
+					if err2 != nil {
 						return  err
 				}
 				 json.Unmarshal(bodyBytes, &akkidata)
-		}
-		
+				fmt.Println(string(bodyBytes))		
+
+}
+		fmt.Println("new")
+fmt.Println(akkidata[:])		
 		fmt.Println(akkidata)
 		for d := range akkidata {
 
@@ -101,10 +149,10 @@ func (bt *Akkibeat) Run(b *beat.Beat) error {
 				"type":	"akkibeat",
 				"counter": counter,
 				"Message": akkidata[d].Message,
-				"MaxResponseTime": akkidata[d].Data.ChartData.ResponseTimeReportChart.Location.Max,
-				"Label": akkidata[d].Data.ChartData.ResponseTimeReportChart.Location.Label,
-				"MinResponseTime": akkidata[d].Data.ChartData.ResponseTimeReportChart.Location.Min,
-				"AvgResponseTime": akkidata[d].Data.ChartData.ResponseTimeReportChart.Location.Avg,
+				"MaxResponseTime": akkidata[d].Data.ChartData[0].LocationResponseTimeChart[0].Num6.Max[0],
+				"Label": akkidata[d].Data.ChartData[0].LocationResponseTimeChart[0].Num6.Label,
+				"MinResponseTime": akkidata[d].Data.ChartData[0].LocationResponseTimeChart[0].Num6.Min[0],
+				"AvgResponseTime": akkidata[d].Data.ChartData[0].LocationResponseTimeChart[0].Num6.Average[0],
 			},
 		}
 		bt.client.Publish(event)
