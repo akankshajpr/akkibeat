@@ -5,7 +5,7 @@
 akkibeat:
   # Defines how often an event is sent to the output
   period: 10s
-  url: "https://www.site24x7.com/api/reports/performance/159205000015902010?granularity=5&locations=159205000000025039&period=8"
+  url: "https://www.site24x7.com/api/reports/performance/159205000015902010?granularity=5&period=5"
   authorization: Zoho-authtoken d1365aa4e20181a85baf534ba89da18f
 
 #================================ General =====================================
