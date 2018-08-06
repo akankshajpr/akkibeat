@@ -5,14 +5,14 @@
 akkibeat:
   # Defines how often an event is sent to the output
   period: 10s
-  url: "https://www.site24x7.com/api/reports/performance/159205000015902010?granularity=5&period=5"
+  url: "https://www.site24x7.com/api/reports/performance/159205000015902029?granularity=1&period=0"
   authorization: Zoho-authtoken d1365aa4e20181a85baf534ba89da18f
 
 #================================ General =====================================
 
 # The name of the shipper that publishes the network data. It can be used to group
 # all the transactions sent by a single shipper in the web interface.
-#name:
+name: "site24x7"
 
 # The tags of the shipper are included in their own field with each
 # transaction published.
@@ -66,9 +66,9 @@ setup.kibana:
 # Configure what output to use when sending the data collected by the beat.
 
 #-------------------------- Elasticsearch output ------------------------------
-output.elasticsearch:
+#output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["localhost:9200"]
+ # hosts: ["localhost:9200"]
 
   # Optional protocol and basic auth credentials.
   #protocol: "https"
@@ -76,10 +76,10 @@ output.elasticsearch:
   #password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-#output.logstash:
+output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
-
+#  hosts: ["automation-platform-0f399cec09c8b3af.elb.us-east-1.amazonaws.com:31000"]
+ hosts: ["localhost:5044"]
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
   #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]

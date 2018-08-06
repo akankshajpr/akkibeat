@@ -155,7 +155,7 @@ func (bt *Smartcenterbeat) Run(b *beat.Beat) error {
 						return  err
 				}
 				 json.Unmarshal(bodyBytes, &akkidata)
-				fmt.Println(akkidata)
+				fmt.Println(string(bodyBytes))
 
 }
   
@@ -163,23 +163,24 @@ fmt.Println("new")
 fmt.Println(akkidata)
 //   //
 	 	 
-  //   //
+	for d:= range akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.ChartData {
+
 	 	event := beat.Event{
  		Timestamp: time.Now(),
 	 	 		Fields: common.MapStr{
-	 	 		"@timestamp":  common.Time(time.Now()),
+	 	 		"mytimestamp":  akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.ChartData[d][0],
 	 	 		"type":	"akkibeat",
 	 	 		"counter": counter,
 	 	 		"Message": akkidata.Message,
-	 	 		"MaxResponseTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.Max[0],
+	 	 		"DownloadTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.ChartData[d][5],
 	 	 		//"Label": akkidata.Data.ChartData[0].LocationResponseTimeChart[0].Num6.Label,
-	 	 		"MinResponseTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.Min[0],
-	 	 		"AvgResponseTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.Average[0],
+	 	 		"FirstByteTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.ChartData[d][4],
+	 	 		"SSLTime": akkidata.Data.ChartData[0].Num0.ResponseTimeReportChart.ChartData[d][3],
 	 	 	},
 	 	 }
 	 	bt.client.Publish(event)
 	 	logp.Info("Event sent")
-	 
+	 }
 	counter++
 	}
 }
